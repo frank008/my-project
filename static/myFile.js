@@ -1,15 +1,19 @@
-import Quill from 'quill'
-const Inline = Quill.import('blots/inline')
-class file extends Inline {
-  static create () {
-    const node = super.create()
-    return node
-  }
-
-  static formats (node) {
+import { Quill } from 'vue-quill-editor'
+// 自定义插入a链接
+var Link = Quill.import('formats/link')
+class FileBlot extends Link { // 继承Link Blot
+  static create (value) {
+    let node
+    if (value && !value.href) { // 适应原本的Link Blot
+      node = super.create(value)
+    } else { // 自定义Link Blot
+      node = super.create(value.href)
+      // node.setAttribute('download', value.innerText);  // 左键点击即下载
+      node.innerText = value.innerText
+    }
     return node
   }
 }
-file.blotName = 'file'
-file.tagName = 'span'
-export default file
+FileBlot.blotName = 'link'
+FileBlot.tagName = 'a'
+export default FileBlot

@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {  //解决本地跨域问题  本地URL -远程URL
       '/server': {
-        target: 'http://localhost:8080'
+        target: 'http://gq.athspiring.com'
       }
     },
 

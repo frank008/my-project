@@ -10,7 +10,6 @@
       <button class="ql-image"></button>
       <button class="ql-video"></button>
       <button class="ql-audio"></button>
-      <button class="ql-file"></button>
       <button class="ql-formula"></button>
     </span>
       <span class="ql-formats">
@@ -77,10 +76,6 @@ export default {
     voiceButton.classList.add('fa')
     voiceButton.classList.add('fa-volume-up')
     voiceButton.classList.add('fa-lg')
-
-    const myFileButton = document.querySelector('.ql-file')
-    myFileButton.classList.add('fa')
-    myFileButton.classList.add('fa-file-text')
     this.initQuill()
   },
   beforeDestroy () {
@@ -99,8 +94,8 @@ export default {
       this.quill.getModule('toolbar').addHandler('image', this.uploadImageHandler)
       this.quill.getModule('toolbar').addHandler('video', this.uploadVideoHandler)
       this.quill.getModule('toolbar').addHandler('audio', this.uploadVoiceHandler)
-      this.quill.getModule('toolbar').addHandler('file', this.uploadFileHandler)
-      this.quill.getModule('toolbar').addHandler('link', this.SnowThemeLinkHandler)
+      this.quill.getModule('toolbar').addHandler('link', this.uploadFileHandler)
+      // this.quill.getModule('toolbar').addHandler('link', this.SnowThemeLinkHandler)
     },
     uploadVoiceHandler () {
       const input = document.querySelector('#uploadVoice')
@@ -152,37 +147,18 @@ export default {
     async uploadFile (event) {
       const form = new FormData()
       form.append('upload_file', event.target.files[0])
-      var fileName = event.target.files[0].name
-      alert('文件名：' + fileName)
-      const url = 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3228549874,2173006364&fm=26&gp=0.jpg' // await $.ajax(...)
+      // var fileName = event.target.files[0].name
+      const url = 'http://www.gsk.com.cn/uploadfiles/2017/09/GSK988Ti%E7%B3%BB%E5%88%97%20%E7%BC%96%E7%A8%8B%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C2017%E5%B9%B41%E6%9C%88%E7%AC%AC1%E7%89%8810%E5%AE%9A.pdf' // await $.ajax(...)
       const addImageRange = this.quill.getSelection()
       const newRange = 0 + (addImageRange !== null ? addImageRange.index : 0)
-      // this.quill.insertEmbed(newRange, 'image', url)
-      this.quill.insertEmbed(newRange, 'image', {href: url, innerText: fileName}, 'api')
+      this.quill.insertEmbed(newRange, 'a', url)
       this.quill.setSelection(1 + newRange)
-    },
-    SnowThemeLinkHandler (value) {
-      alert('link:' + value)
-      if (value) {
-        var href = prompt('Enter the URL')
-        const range = this.quill.getSelection()
-        if (range == null || range.length === 0) return
-        let preview = this.quill.getText(range)
-        if (/^\S+@\S+\.\S+$/.test(preview) && preview.indexOf('mailto:') !== 0) {
-          preview = `mailto:${preview}`
-        }
-        // this.quill.format('link', href)
-        const newRange = 0 + (range !== null ? range.index : 0)
-        this.quill.insertEmbed(newRange, 'image', {href: href, innerText: '附件链接'}, 'api')
-        this.quill.setSelection(1 + range)
-      } else {
-        this.quill.format('link', false)
-      }
     }
   }
 }
 </script>
 <style>
-  .uploadVoiceBtn{}
-
+  .ql-link{}
+  .ql-stroke{}
+  .ql-even{}
 </style>
